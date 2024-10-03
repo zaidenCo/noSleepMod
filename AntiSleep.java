@@ -1,20 +1,25 @@
-package com.zaiden.antisleep;
+package com.zaiden;
 
 import net.fabricmc.api.ModInitializer;
+
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.PlayerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AntiSleep implements ModInitializer {
+public class Nosleep implements ModInitializer {
+	public static final String MOD_ID = "nosleep";
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("antisleep");
+	// This logger is used to write text to the console and the log file.
+	// It is considered best practice to use your mod id as the logger's name.
+	// That way, it's clear which mod wrote info, warnings, and errors.
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    @Override
-    public void onInitialize() {
-        LOGGER.info("Sleeping Won't Happen!");
-        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
-            return Player.BedSleepingProblem.OTHER_PROBLEM;
-        });
-    }
+	@Override
+	public void onInitialize() {
+		EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
+			return PlayerEntity.SleepFailureReason.OTHER_PROBLEM;
+		});
+		LOGGER.info("You Will Be Tired!");
+	}
 }
